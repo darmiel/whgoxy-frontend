@@ -49,6 +49,15 @@ func GetUser(r *http.Request) (u *User, ok bool) {
 	}
 }
 
+func GetUserOrDie(r *http.Request, w http.ResponseWriter) (u *User, die bool) {
+	u, ok := GetUser(r)
+	if !ok {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return nil, true
+	}
+	return u, false
+}
+
 func LoginUser(w http.ResponseWriter, u *User) {
 	// generate cookie
 	cookie := authcookie.NewSinceNow(u.DiscordUser.UserID, 8*time.Hour, cookieSecret)
