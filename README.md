@@ -1,0 +1,1 @@
+frontend for [whgoxy](https://github.com/darmiel/discord-webhook-proxy)
