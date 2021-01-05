@@ -1,7 +1,7 @@
 package authenticator
 
 import (
-	"github.com/darmiel/whgoxy-frontend/discord"
+	"github.com/darmiel/whgoxy-frontend/internal/discord"
 	"github.com/dchest/authcookie"
 	"golang.org/x/oauth2"
 	"log"

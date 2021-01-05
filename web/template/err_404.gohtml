@@ -1,0 +1,35 @@
+{{ define "customCSS" }}
+{{ end }}
+
+{{ define "title" }}
+    whgoxy - 404 :(
+{{ end }}
+
+{{ define "content" }}
+    <section id="welcome">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-6" id="sectionLeft">
+                    <h1 class="text-light text-right">404</h1>
+                    <h2 class="text-light my-5">
+                        I don't know where you were going, but this is not the place for you :(
+                    </h2>
+
+                    <script>alert("Found current URL: {{.CurrentURL}}")</script>
+
+                    <small>{{ .CurrentURL }}</small>
+
+                    <a class="btn text-white discordStyledButton" href="/">Home</a>
+                </div>
+
+                <div class="col-md-6 py-5">
+                    <img
+                            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmillieschmidt.files.wordpress.com%2F2016%2F08%2Fsad-cat.gif%3Fw%3D322&f=1&nofb=1"
+                            alt=""
+                            srcset=""
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+{{ end }}

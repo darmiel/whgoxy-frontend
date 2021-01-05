@@ -3,7 +3,7 @@ package authenticator
 import (
 	"context"
 	"fmt"
-	"github.com/darmiel/whgoxy-frontend/discord"
+	"github.com/darmiel/whgoxy-frontend/internal/discord"
 	"github.com/gorilla/mux"
 	"golang.org/x/oauth2"
 	"net/http"
