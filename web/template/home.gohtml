@@ -10,14 +10,17 @@
         <div class="container py-5">
             <div class="row">
                 <div class="col-md-6" id="sectionLeft">
-                    <h1 class="text-light text-right">Heading</h1>
+                    <h1 class="text-light text-right">Discord Webhook Proxy</h1>
                     <h2 class="text-light my-5">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae quis
-                        quod iste eos
+                        Customizable proxy for Discord webhooks to make them accessible
+                        to a variety of software that does not support Discord webhooks.
                     </h2>
-                    <a class="btn text-white discordStyledButton" href="/"
-                    >Do something</a
-                    >
+
+                    {{ if .User }}
+                        <a class="btn text-dark btn-light" href="/dashboard">Dashboard</a>
+                    {{ else }}
+                        <a class="btn text-white discordStyledButton" href="/login">Log in with Discord</a>
+                    {{ end }}
                 </div>
 
                 <div class="col-md-6 py-5">
@@ -31,7 +34,7 @@
         </div>
     </section>
 
-    <div class="pt-5 mb-4" id="moreContent">
+    <div class="pt-5 mb-4" id="features">
         <div class="container-lg card-columns text-center">
             <div class="card featureCard">
                 <div class="card-body text-center">

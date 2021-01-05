@@ -21,13 +21,15 @@
                 <div class="col-md-6 collapse show" id="navbarText">
                     <ul class="navbar-nav justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link text-white" aria-current="page" href="#">Home</a>
+                            <a class="nav-link text-white" aria-current="page" href="/">Home</a>
                         </li>
+                        {{ if .User }}
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+                            </li>
+                        {{ end }}
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Pricing</a>
+                            <a class="nav-link text-white" href="/#features">Features</a>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +43,8 @@
                         <a class="navbar-brand col-3 m-0" href="/logout">
                             <span class="text-muted">Hi,</span>
                             <span class="d-none d-md-inline navbar-item font-weight-bold">{{ .User.Username }}</span>
-                            <img src="{{ .User | Avatar }}" alt="" width="$0" height="40" class="d-inline-block align-middle">
+                            <img src="{{ .User | Avatar }}" alt="" width="$0" height="40"
+                                 class="d-inline-block align-middle">
                         </a>
                     {{ else }}
                         <!-- Show Login Button -->
