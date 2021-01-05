@@ -20,16 +20,28 @@
 
                 <div class="col-md-6 collapse show" id="navbarText">
                     <ul class="navbar-nav justify-content-center">
+                        <!-- Home -->
                         <li class="nav-item">
                             <a class="nav-link text-white" aria-current="page" href="/">Home</a>
                         </li>
+
+                        <!-- Dashboard -->
                         {{ if .User }}
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="/dashboard">Dashboard</a>
                             </li>
                         {{ end }}
+
+                        <!-- Features -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/#features">Features</a>
+                        </li>
+
+                        <!-- GitHub -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="https://github.com/darmiel/discord-webhook-proxy">
+                                <img src="/static/img/GitHub-Mark-Light-32px.png" height="24px" alt="GitHub">
+                            </a>
                         </li>
                     </ul>
                 </div>
