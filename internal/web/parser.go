@@ -21,10 +21,23 @@ func (parser *TemplateParser) ParseTemplate(name string) (tpl *template.Template
 	}
 
 	tmplDir := fmt.Sprintf("%s/template", "web")
+	componentsDir := tmplDir + "/components"
+
 	basePath := fmt.Sprintf("%s/base.gohtml", tmplDir)
 	tmplPath := fmt.Sprintf("%s/%s.gohtml", tmplDir, name)
 
-	return root.ParseFiles([]string{basePath, tmplPath}...)
+	return root.ParseFiles([]string{
+		// components
+		fmt.Sprintf("%s/head.gohtml", componentsDir),
+		fmt.Sprintf("%s/navbar.gohtml", componentsDir),
+		fmt.Sprintf("%s/footer.gohtml", componentsDir),
+
+		// base
+		basePath,
+
+		// template
+		tmplPath,
+	}...)
 }
 
 // MustParseTemplate calls ParseTemplate(...) and panics on an error.

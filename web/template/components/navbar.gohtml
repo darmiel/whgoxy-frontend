@@ -1,0 +1,42 @@
+{{ define "navbar" }}
+    <nav class="navbar navbar-dark navbar-expand-md" id="navbar">
+        <div class="container-xl">
+            <div class="row container-fluid">
+
+                <a class="navbar-brand col-3 m-0" href="#">
+                    <!--
+                        <img src="https://source.unsplash.com/random/128x128" alt="" width="$0" height="40"
+                             class="d-inline-block align-middle">
+                    -->
+                    <span class="d-none d-md-inline navbar-item font-weight-bold">WHGoxy</span>
+                </a>
+
+                <div class="d-md-none col-6 text-center">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="col-md-6 collapse show" id="navbarText">
+                    <ul class="navbar-nav justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Pricing</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-3 text-end">
+                    <a href="/" class="btn btn-light discord-button navbar-item">Click here</a>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+{{ end }}
