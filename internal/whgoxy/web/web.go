@@ -50,19 +50,20 @@ func (ws *WebServer) Run() (err error) {
 	ws.readTemplates()
 	ws.updateRoutes()
 
-	// http
-	go func() {
-		// https
-		tls := ws.conf.TLS
-		if tls.AddrTLS != "" {
-			log.Println("TLS enabled")
-			if err := http.ListenAndServeTLS(tls.AddrTLS, tls.CertFile, tls.KeyFile, ws.router); err != nil {
-				panic(err)
-			}
-		}
-	}()
+	// https
+	tls := ws.conf.TLS
+	if tls.Enabled() {
+		log.Println("[TLS] Enabled! Redirecting HTTP to HTTPS")
+		go func() {
+			// redirect http to https
+			panic(http.ListenAndServe(ws.conf.Addr, http.HandlerFunc(ws.redirectHttps)))
+		}()
 
-	return http.ListenAndServe(ws.conf.Addr, ws.router)
+		return http.ListenAndServeTLS(tls.AddrTLS, tls.CertFile, tls.KeyFile, ws.router)
+	} else {
+		// http
+		return http.ListenAndServe(ws.conf.Addr, ws.router)
+	}
 }
 
 func (ws *WebServer) Exec(name string, r *http.Request, w http.ResponseWriter, data map[string]interface{}) (err error) {

@@ -26,6 +26,10 @@ type WebConfigTLS struct {
 	KeyFile  string
 }
 
+func (tls WebConfigTLS) Enabled() (res bool) {
+	return tls.AddrTLS != ""
+}
+
 type WebConfig struct {
 	WebDir string
 	Addr   string
