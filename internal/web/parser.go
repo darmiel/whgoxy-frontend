@@ -3,6 +3,10 @@ package web
 import (
 	"fmt"
 	"html/template"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 const rootTmpl = `{{ define "root" }} {{ template "base" . }} {{ end }}`
@@ -26,18 +30,30 @@ func (parser *TemplateParser) ParseTemplate(name string) (tpl *template.Template
 	basePath := fmt.Sprintf("%s/base.gohtml", tmplDir)
 	tmplPath := fmt.Sprintf("%s/%s.gohtml", tmplDir, name)
 
-	return root.ParseFiles([]string{
-		// components
-		fmt.Sprintf("%s/head.gohtml", componentsDir),
-		fmt.Sprintf("%s/navbar.gohtml", componentsDir),
-		fmt.Sprintf("%s/footer.gohtml", componentsDir),
+	var files []string
 
-		// base
-		basePath,
+	// read all components from "components" dir
+	if err := filepath.Walk(componentsDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 
-		// template
-		tmplPath,
-	}...)
+		// add component to file if it has the ".gohtml" suffix
+		if strings.HasSuffix(path, ".gohtml") {
+			log.Println("[+]", name, "Added component", path)
+			files = append(files, path)
+		}
+
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// add base template and selected template
+	files = append(files, basePath, tmplPath)
+
+	// return parsed template
+	return root.ParseFiles(files...)
 }
 
 // MustParseTemplate calls ParseTemplate(...) and panics on an error.

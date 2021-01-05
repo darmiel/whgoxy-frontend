@@ -68,7 +68,7 @@ func (ws *WebServer) Exec(name string, r *http.Request, w http.ResponseWriter, d
 		data = make(map[string]interface{})
 	}
 	// add default data
-	data["CurrentURL"] = r.URL.RequestURI()
+	data["CurrentURL"] = r.RequestURI
 	log.Println("Data:", data)
 
 	// get template
@@ -78,11 +78,7 @@ func (ws *WebServer) Exec(name string, r *http.Request, w http.ResponseWriter, d
 		_, _ = fmt.Fprint(w, "Template "+name+" not found.")
 		return
 	}
-
-	// execut template
-	return tpl.Execute(w, map[string]interface{}{
-		"CurrentURL": "abc",
-	})
+	return tpl.Execute(w, data)
 }
 
 func (ws *WebServer) MustExec(name string, w http.ResponseWriter, r *http.Request, data map[string]interface{}) {
