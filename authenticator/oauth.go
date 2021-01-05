@@ -4,12 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/darmiel/whgoxy-frontend/discord"
+	"github.com/gorilla/mux"
 	"golang.org/x/oauth2"
 	"net/http"
 	"os"
 )
 
-func New(dashboardURL string) {
+func New(router *mux.Router, dashboardURL string) {
 	oauthConfig := &oauth2.Config{
 		RedirectURL:  "http://localhost:1337/callback",
 		ClientID:     os.Getenv("CLIENT_ID"),
@@ -21,12 +22,12 @@ func New(dashboardURL string) {
 		},
 	}
 
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		url := oauthConfig.AuthCodeURL("test-123")
 		http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 	})
 
-	http.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
 		// get discord code from query params
 		code := r.URL.Query().Get("code")
 
