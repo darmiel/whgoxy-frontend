@@ -22,5 +22,7 @@ func main() {
 
 	ws := web.NewWebServer(config.ConfigWeb, parser, router)
 
-	panic(ws.Run())
+	if err := ws.Run(); err != nil {
+		panic(err)
+	}
 }

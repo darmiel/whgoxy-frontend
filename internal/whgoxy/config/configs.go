@@ -20,7 +20,14 @@ type OAuthConfig struct {
 
 var ConfigWeb WebConfig
 
+type WebConfigTLS struct {
+	AddrTLS  string
+	CertFile string
+	KeyFile  string
+}
+
 type WebConfig struct {
 	WebDir string
 	Addr   string
+	TLS    WebConfigTLS
 }

@@ -50,6 +50,18 @@ func (ws *WebServer) Run() (err error) {
 	ws.readTemplates()
 	ws.updateRoutes()
 
+	// http
+	go func() {
+		// https
+		tls := ws.conf.TLS
+		if tls.AddrTLS != "" {
+			log.Println("TLS enabled")
+			if err := http.ListenAndServeTLS(tls.AddrTLS, tls.CertFile, tls.KeyFile, ws.router); err != nil {
+				panic(err)
+			}
+		}
+	}()
+
 	return http.ListenAndServe(ws.conf.Addr, ws.router)
 }
 
