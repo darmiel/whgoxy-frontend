@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/darmiel/whgoxy-frontend/internal/whgoxy/discord"
 	"html/template"
 	"log"
 	"os"
@@ -18,8 +19,14 @@ func NewTemplateParser() (parser *TemplateParser) {
 	return &TemplateParser{}
 }
 
+var funcs = map[string]interface{}{
+	"Avatar": func(u *discord.DiscordUser) string {
+		return u.GetAvatarUrl()
+	},
+}
+
 func (parser *TemplateParser) ParseTemplate(name string) (tpl *template.Template, err error) {
-	root, err := template.New("root").Parse(rootTmpl)
+	root, err := template.New("root").Funcs(funcs).Parse(rootTmpl)
 	if err != nil {
 		return nil, err
 	}

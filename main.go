@@ -1,34 +1,26 @@
 package main
 
 import (
-	"github.com/darmiel/whgoxy-frontend/internal/authenticator"
-	"github.com/darmiel/whgoxy-frontend/internal/web"
+	"github.com/darmiel/whgoxy-frontend/internal/whgoxy/authenticator"
+	"github.com/darmiel/whgoxy-frontend/internal/whgoxy/config"
+	"github.com/darmiel/whgoxy-frontend/internal/whgoxy/web"
 	"github.com/gorilla/mux"
+	"log"
 )
 
 func main() {
-
-	// router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	_, _ = fmt.Fprint(w, `<html><body><a href="/login">Login</a></body></html>`)
-	// })
-
-	// router.HandleFunc("/dashboard", func(w http.ResponseWriter, r *http.Request) {
-	// 	if u, die := authenticator.GetUserOrDie(r, w); die {
-	// 		return
-	// 	} else {
-	// 		_, _ = fmt.Fprintf(w, "You are logged in! (%s)", u.DiscordUser.Username)
-	// 	}
-	// })
+	// config
+	if err := config.Load(); err != nil {
+		log.Fatalln("Fatal:", err.Error())
+		return
+	}
 
 	// auth
 	router := mux.NewRouter()
-	authenticator.New(router, "/dashboard")
+	authenticator.New(router, config.ConfigOAuth)
 	parser := web.NewTemplateParser()
 
-	ws := web.NewWebServer(&web.WebConfig{
-		Dir:  "./web",
-		Addr: ":1337",
-	}, parser, router)
+	ws := web.NewWebServer(config.ConfigWeb, parser, router)
 
 	panic(ws.Run())
 }

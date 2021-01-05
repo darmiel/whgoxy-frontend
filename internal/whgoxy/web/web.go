@@ -2,32 +2,22 @@ package web
 
 import (
 	"fmt"
+	"github.com/darmiel/whgoxy-frontend/internal/whgoxy/authenticator"
+	"github.com/darmiel/whgoxy-frontend/internal/whgoxy/config"
 	"github.com/gorilla/mux"
 	"html/template"
 	"log"
 	"net/http"
 )
 
-type WebConfig struct {
-	Dir  string
-	Addr string
-}
-
-// "./web/static"
-func NewWebConfig(dir string) (cfg *WebConfig) {
-	return &WebConfig{
-		Dir: dir,
-	}
-}
-
 type WebServer struct {
 	parser    *TemplateParser
 	router    *mux.Router
 	templates map[string]*template.Template
-	conf      *WebConfig
+	conf      config.WebConfig
 }
 
-func NewWebServer(conf *WebConfig, parser *TemplateParser, router *mux.Router) (ws *WebServer) {
+func NewWebServer(conf config.WebConfig, parser *TemplateParser, router *mux.Router) (ws *WebServer) {
 	return &WebServer{
 		router:    router,
 		parser:    parser,
@@ -45,7 +35,7 @@ func (ws *WebServer) updateRoutes() {
 	router := ws.router
 
 	// static dir
-	staticDir := ws.conf.Dir + "/static/"
+	staticDir := ws.conf.WebDir + "/static/"
 	prefix := http.StripPrefix("/static", http.FileServer(http.Dir(staticDir)))
 	router.PathPrefix("/static/").Handler(prefix)
 
@@ -67,9 +57,27 @@ func (ws *WebServer) Exec(name string, r *http.Request, w http.ResponseWriter, d
 	if data == nil {
 		data = make(map[string]interface{})
 	}
+
 	// add default data
-	data["CurrentURL"] = r.RequestURI
-	log.Println("Data:", data)
+	data["CurrentURL"] = r.URL.String()
+	if user, ok := authenticator.GetUser(r); ok && user != nil {
+		data["User"] = user.DiscordUser
+		log.Println("OK user found:", user, ok)
+	} else {
+		// // debug user
+		// // TODO: Remove me later
+		// data["User"] = &discord.DiscordUser{
+		// 	UserID:        "150347348088848384",
+		// 	Username:      "d2a",
+		// 	Avatar:        "408d6f884febd122f5252e2fc6d93c2e",
+		// 	Discriminator: "1325",
+		// 	PublicFlags:   256,
+		// 	Flags:         256,
+		// 	Locale:        "en-US",
+		// 	MFAEnabled:    true,
+		// }
+		log.Println("ERR user not found:", user, ok)
+	}
 
 	// get template
 	tpl, ok := ws.templates[name]
